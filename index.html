@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>jQuery+CSS3流星弹幕</title>
+    <meta content="jQuery+CSS3流星弹幕" name="description">
+    <meta content="jQuery+CSS3流星弹幕" name="keywords">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <script src="http://www.iampua.com/pui/dist/js/pix2rem.min.js"></script>
+    <link href="http://www.iampua.com/pui/dist/css/base_2016_11.min.css" rel="stylesheet" />
+    <link href="http://www.iampua.com/pui/dist/css/detail_2016_11.min.css" rel="stylesheet" />
+    <link href="http://www.iampua.com/pui/dist/css/bullets_2017_02_22.min.css" rel="stylesheet" />
+</head>
+<body class="bgc_g">
+    <article class="pageview">
+        <section class="main detail">
+            <!--*焦点图*-->
+            <div class="hbanner">
+                <div id="hswiper" class="swiper-container">
+                </div>
+                <!--弹幕模块-->
+                <div class="bullets" id="bullets">
+                </div>
+            </div>
+        </section>
+    </article>
+    <footer id="footer" style="text-align:center;font-size:12px;padding:250px 0 50px;">
+        <div class="outer">
+            <div id="footer-info">
+                <div class="footer-left">
+                    <a target="_blank" href="http://www.iampua.com/pui/">返回 PUI 首页</a> | <a target="_blank" href="http://www.iampua.com/">泡学达人</a> | <a target="_blank" href="mailto:kbl_1794@qq.com">联系我们</a>
+                    <br>
+                    <br>
+                    Copyright © 2015-<span id="year_today">2017</span> iampua.com | <a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备13012994号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>  
+    <!--* 底部主菜单 *-->
+    <footer class="bottom_fixed_btns" id="bottom_fixed_btns">
+        <div class="container">
+            <ul class="clearfix">
+                <li><input type="button" class="btn fire_bullet" id="fire_bullet" value="发弹幕" /></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!--* 输入弹幕文字 *-->
+    <div class="bullet_input_dialog" id="bullet_input_dialog">
+        <div class="container">
+            <ul class="clearfix">
+                <li>
+                    <a href="javascript:void(0);" class="bb_ico" id="bb_ico">
+                        <img src="dist/img/left_arr.png" />
+                    </a>
+                </li>
+                <li><input type="text" class="b_text" id="b_text" placeholder="最多只能输入20个文字" maxlength="20" /></li>
+                <li><input type="button" class="btn b_send" id="b_send" value="发送" /></li>
+            </ul>
+        </div>
+    </div>
+    <script src="http://www.iampua.com/pui/dist/js/lib/jquery-2.1.3.min.js"></script>
+    <script>
+        $(function () {
+
+            /********************************** 弹幕 *********************************/
+            // 弹幕输入
+            var barHeight = $('#bullet_input_dialog').height();
+            $('#fire_bullet').click(function () {
+                $('#bullet_input_dialog').fadeIn();
+                $('#b_text').focus();
+            });
+            $('#bb_ico').click(function () {
+                $('#bullet_input_dialog').fadeOut();
+
+            });
+            // 弹幕动态效果
+            var $bullets = $('#bullets'),
+                maxHeight = $('#hswiper').height() * (1 - 46 / 480),
+                messageArr = [ // ajax过来的队列数据
+                    {
+                        avatar: 'http://dummyimage.com/110/FF8604/fff',
+                        message: '说了什么哈哈'
+                    }, {
+                        avatar: 'http://dummyimage.com/110/FF8604/fff',
+                        message: '我到底我到底说了什么'
+                    }
+                ];
+            setInterval(function () { // 模拟每2秒获取数据
+                if (messageArr.length > 0) {
+                    var colors = ['it-r', 'it-g', 'it-o', 'it-p'];
+                    $.each(messageArr, function (n, obj) {
+                        var _html = '<div class="it ' + colors[Math.round(3*Math.random())] + ' clearfix on"><img src="' + obj.avatar + '" /><span class="text">' + obj.message + '</span></div>';
+                        setTimeout(function () {
+                            $bullets.prepend(_html);
+                            setTimeout(function () {
+                                var top = maxHeight * Math.random() + 'px',
+                                    left = '-200%'
+                                $('#bullets').find('.on').addClass('off animated').removeClass('on').css({
+                                    top: top,
+                                    left: left
+                                });
+                            }, 20);
+                        }, 1000 * n);
+                    });
+                }
+                if ($('#bullets .off').length > 30) {
+                    $('#bullets .off:gt(30)').remove();
+                }
+            }, 2000);
+            /********************************** End *********************************/
+        });
+    </script>
+    <script>
+    document.getElementById('year_today').innerHTML = (new Date()).getFullYear(); var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?3f796b398b088d897a22e0e437ee603e";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>        
+</body>
+</html>
